@@ -1,5 +1,6 @@
 from urllib import request
 import json
+import os
 
 
 item_table = {}  # 物品表, key为物品全名, value为itemId
@@ -10,12 +11,15 @@ formula_table = {}  # 合成公式表 key为itemId, value为另一个字典, 其
 
 
 def check_table_updates():
+    if not os.path.exists("gamedata/"):
+        os.mkdir("gamedata/")
+        open("gamedata/data_version.txt", "ab").close()
     with open('gamedata/data_version.txt', 'rb+') as f:
         online_version = request.urlopen(
             'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/data_version.txt'
         ).read()
         local_version = f.read()
-        if (online_version == local_version):
+        if online_version == local_version:
             return True
         print("检测到最新表格数据:\n", online_version.decode("utf-8"),
               "本地表格数据:", local_version.decode("utf-8"), "\n正在更新数据中...")
