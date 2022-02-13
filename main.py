@@ -11,7 +11,7 @@ formula_table = {}  # 合成公式表 key为itemId, value为另一个字典, 其
 
 
 def check_table_updates():
-    if not os.path.exists("gamedata/"):
+    if not os.path.exists("gamedata/data_version.txt"):
         os.mkdir("gamedata/")
         open("gamedata/data_version.txt", "ab").close()
     with open('gamedata/data_version.txt', 'rb+') as f:
@@ -21,8 +21,11 @@ def check_table_updates():
         local_version = f.read()
         if online_version == local_version:
             return True
-        print("检测到最新表格数据:\n", online_version.decode("utf-8"),
-              "本地表格数据:", local_version.decode("utf-8"), "\n正在更新数据中...")
+        f.seek(0)
+        f.truncate(0)
+        f.seek(0)
+        print("检测到最新表格数据:\n" + online_version.decode("utf-8") +
+              "本地表格数据:\n" + local_version.decode("utf-8") + "正在更新数据中...")
         f.write(online_version)
 
     with open('gamedata/item_table.json', 'wb') as f:
