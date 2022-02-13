@@ -1,4 +1,5 @@
 from urllib import request
+from contextlib import closing
 import json
 import os
 
@@ -14,10 +15,11 @@ def check_table_updates():
     if not os.path.exists("gamedata/data_version.txt"):
         os.mkdir("gamedata/")
         open("gamedata/data_version.txt", "ab").close()
-    with open('gamedata/data_version.txt', 'rb+') as f:
-        online_version = request.urlopen(
-            'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/data_version.txt'
-        ).read()
+    with (open('gamedata/data_version.txt', 'rb+') as f,
+          closing(request.urlopen(
+              'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/data_version.txt'
+          )) as o):
+        online_version = o.read()
         local_version = f.read()
         if online_version == local_version:
             return True
@@ -28,22 +30,25 @@ def check_table_updates():
               "本地表格数据:\n" + local_version.decode("utf-8") + "正在更新数据中...")
         f.write(online_version)
 
-    with open('gamedata/item_table.json', 'wb') as f:
-        online_version = request.urlopen(
-            'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/item_table.json'
-        ).read()
+    with (open('gamedata/item_table.json', 'wb') as f,
+          closing(request.urlopen(
+              'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/item_table.json'
+          )) as o):
+        online_version = o.read()
         f.write(online_version)
 
-    with open('gamedata/stage_table.json', 'wb') as f:
-        online_version = request.urlopen(
-            'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/stage_table.json'
-        ).read()
+    with (open('gamedata/stage_table.json', 'wb') as f,
+          closing(request.urlopen(
+              'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/stage_table.json'
+          )) as o):
+        online_version = o.read()
         f.write(online_version)
 
-    with open('gamedata/building_data.json', 'wb') as f:
-        online_version = request.urlopen(
-            'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/building_data.json'
-        ).read()
+    with (open('gamedata/building_data.json', 'wb') as f,
+          closing(request.urlopen(
+              'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/building_data.json'
+          )) as o):
+        online_version = o.read()
         f.write(online_version)
 
     return False
