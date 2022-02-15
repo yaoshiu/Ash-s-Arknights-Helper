@@ -38,10 +38,10 @@ def report(stage_id: str, drops: list[dict[str:str or int]], source: str = 'CLIE
                 },
             ]
 
-    - `source`: Optional; The source is used to mark the client sending this request.
+    * `source`: Optional; The source is used to mark the client sending this request.
     Equivalent to 'User-Agent' presented in the header
-    - `version`: Optional; The version of the source.
-    - `server`: Optional; Indecate the server of this drop sample.
+    * `version`: Optional; The version of the source.
+    * `server`: Optional; Indecate the server of this drop sample.
     Support 4 servers now: 'CN', 'US', 'JP', and 'KR'.
     '''
     url = "https://penguin-stats.io/PenguinStats/api/v2/report"
