@@ -22,11 +22,11 @@ def check_table_updates() -> bool:
     Raises:
         SSLError:HTTPSConnectionPool: Max retries exceeded with url
     '''
-    if not os.path.exists("gamedata/data_version.txt"):
-        os.mkdir("gamedata/")
-        open("gamedata/data_version.txt", "ab").close()
+    if not os.path.exists("data/data_version.txt"):
+        os.mkdir("data/")
+        open("data/data_version.txt", "ab").close()
 
-    with (open('gamedata/data_version.txt', 'rb') as f,
+    with (open('data/data_version.txt', 'rb') as f,
           closing(request.urlopen(
               'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/data_version.txt'
           )) as o):
@@ -56,44 +56,44 @@ def load_tables() -> None:
 
     check, online_version = check_table_updates()
     if check:
-        with open('gamedata/data_version.txt', 'w') as f:
+        with open('data/data_version.txt', 'wb') as f:
             f.write(online_version)
 
-        with (open('gamedata/item_table.json', 'wb') as f,
+        with (open('data/item_table.json', 'wb') as f,
               closing(request.urlopen(
                       'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/item_table.json'
                       )) as o):
             online_version = o.read()
             f.write(online_version)
 
-        with (open('gamedata/stage_table.json', 'wb') as f,
+        with (open('data/stage_table.json', 'wb') as f,
               closing(request.urlopen(
                       'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/stage_table.json'
                       )) as o):
             online_version = o.read()
             f.write(online_version)
 
-        with (open('gamedata/building_data.json', 'wb') as f,
+        with (open('data/building_data.json', 'wb') as f,
               closing(request.urlopen(
                       'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/building_data.json'
                       )) as o):
             online_version = o.read()
             f.write(online_version)
 
-    with open('gamedata/item_table.json', 'rb') as f:
+    with open('data/item_table.json', 'rb') as f:
         temp = json.load(f)['items']
         for value in temp.values():
             item_table[value["name"]] = value["itemId"]
             find_item_name[value['itemId']] = value['name']
             rarity_table[value['name']] = value['rarity']
 
-    with open('gamedata/stage_table.json', 'rb') as f:
+    with open('data/stage_table.json', 'rb') as f:
         temp = json.load(f)['stages']
         for value in temp.values():
             stage_table[value['code']] = value['stageId']
             find_stage_code[value['stageId']] = value['code']
 
-    with open('gamedata/building_data.json', 'rb') as f:
+    with open('data/building_data.json', 'rb') as f:
         temp = json.load(f)['workshopFormulas']
         for value in temp.values():
             tempdir = {}
