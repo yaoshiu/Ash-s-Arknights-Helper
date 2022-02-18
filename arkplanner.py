@@ -1,32 +1,31 @@
 from contextlib import closing
 import requests
-import tables
 
 
 def get_plan(owned: dict[str:int] = {}, required: dict[str:int] = {}, extra_outc: bool = False, convertion_dr: float = 0,
              exp_demand: bool or int = True, gold_demand: bool or int = True, exclude: list[str] = [], store: bool = False,
              input_lang: str = 'zh', output_lang: str = 'zh', server: str = 'CN') -> dict[str:int or list[dict[str:str]]]:
-    '''Get the plan for a given set of resources
+    """Get the plan for a given set of resources
 
     Args:
-        * `owned`: A dict of items owned, where keys are item names.
+        * `owned`: Optional; A dict of items owned, where keys are item names.
         i.e. 'D32钢', values are numbers of items owned.
         * `required`: A dict of items required, where keys are item names.
         i.e. 'D32钢', values are numbers of items required.
-        * `extra_outc`: Whether extra outcome of convertion is considered.
-        * `conversion`:The drop rate of extra outcome.
-        * `exp_demand`: Whether Battle Record(作战记录) is considered valuable.
+        * `extra_outc`: Optional;Whether extra outcome of convertion is considered.
+        * `conversion`: Optional;The drop rate of extra outcome.
+        * `exp_demand`: Optional;Whether Battle Record(作战记录) is considered valuable.
         If True, the requirement of Battle Record is set to `1e9`.
         If input is an integer, the requirement of experiment is set to be equal to the input.
-        * `gold_demand`: Whether LMD(龙门币) is considered valuable.
+        * `gold_demand`: Optional; Whether LMD(龙门币) is considered valuable.
         If True, the requirement of LMD is set to `1e9`.
         If False, the value of LMD is set to 0. 
         If input is an integer, the requirement of LMD is set to be equal to the input.
-        * `exclude`: Stages banned during calculation. Example: `['1-7', 'SA-5']
-        * `store`: Whether to response green and yellow ticket values in stores.
-        * `input_lang`: The language of the input. Available languages: `['zh', 'en', 'ja', 'ko'], and 'id' for item ids.
-        * `output_lang`: The language of the output. Available languages: `['zh', 'en', 'ja', 'ko'], and 'id' for item ids.
-        * `server`: Using active stages from this server. Available Servers: ['CN', 'US', 'JP', 'KR'].
+        * `exclude`: Optional; Stages banned during calculation. Example: `['1-7', 'SA-5']
+        * `store`: Optional; Whether to response green and yellow ticket values in stores.
+        * `input_lang`: Optional; The language of the input. Available languages: `['zh', 'en', 'ja', 'ko'], and 'id' for item ids.
+        * `output_lang`: Optional; The language of the output. Available languages: `['zh', 'en', 'ja', 'ko'], and 'id' for item ids.
+        * `server`: Optional; Using active stages from this server. Available Servers: ['CN', 'US', 'JP', 'KR'].
 
     Returns:
         A dict mapping the cost, gold cost, exp, planned stages, syntheses and item values.
@@ -54,7 +53,7 @@ def get_plan(owned: dict[str:int] = {}, required: dict[str:int] = {}, extra_outc
 
         Raises:
             SSLError:HTTPSConnectionPool: Max retries exceeded with url
-    '''
+    """
     url = 'https://planner.penguin-stats.io/plan'
     post_data = {
         'owned': owned,
@@ -75,16 +74,7 @@ def get_plan(owned: dict[str:int] = {}, required: dict[str:int] = {}, extra_outc
 
 
 def __main() -> int:
-    tables.load_tables()
-    plan = get_plan(required={'D32钢': 1, '晶体电子单元': 1, '聚合剂': 1, '双极纳米片': 1})
-    print('需要刷的关卡有:')
-    for map in plan['stages']:
-        print(' ', map['stage'], ':', map['count'])
-    plan['syntheses'].sort(key=lambda x, :
-                           tables.rarity_table[x['target']])
-    print('需要合成的路线为:')
-    for map in plan['syntheses']:
-        print(' ', map['target'], ':', map['count'])
+    get_plan(required={'D32钢': 1})
     return 0
 
 
