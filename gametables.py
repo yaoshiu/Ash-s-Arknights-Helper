@@ -12,7 +12,7 @@ rarity_table = {}  # 物品稀有度表, key为物品全名, value为物品的�
 
 
 def check_table_updates() -> bool:
-    '''Check whether the table needs to be updated.
+    """Check whether the table needs to be updated.
 
     Returns:
         * A `boolean` indicating whether the tables need updating
@@ -21,7 +21,7 @@ def check_table_updates() -> bool:
 
     Raises:
         SSLError:HTTPSConnectionPool: Max retries exceeded with url
-    '''
+    """
     if not os.path.exists("data/data_version.txt"):
         os.mkdir("data/")
         open("data/data_version.txt", "ab").close()
@@ -37,7 +37,7 @@ def check_table_updates() -> bool:
 
 
 def load_tables() -> None:
-    '''Load the tables.
+    """Load the tables.
 
     Tables include the following:
         * The `item_table` whose `key` is the `name` of the item and the `value` is the `id` of the item.
@@ -51,7 +51,7 @@ def load_tables() -> None:
 
     Raises:
         SSLError:HTTPSConnectionPool: Max retries exceeded with url.
-    '''
+    """
     global item_table, stage_table, find_item_name, find_stage_code, formula_table, rarity_table
 
     check, online_version = check_table_updates()
