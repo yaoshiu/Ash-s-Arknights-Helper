@@ -3,7 +3,7 @@ import requests
 
 
 def report(stage_id: str, drops: list[dict[str:str or int]], source: str = 'CLIENT_SOURCE', version: str = 'CLIENT_VERSION', server: str = 'CN') -> None:
-    '''Report the drops to the Penguin Stats
+    """Report the drops to the Penguin Stats
 
     Args:
     * `stage_id`: The stage id of this drop
@@ -43,7 +43,7 @@ def report(stage_id: str, drops: list[dict[str:str or int]], source: str = 'CLIE
     * `version`: Optional; The version of the source.
     * `server`: Optional; Indecate the server of this drop sample.
     Support 4 servers now: 'CN', 'US', 'JP', and 'KR'.
-    '''
+    """
     url = "https://penguin-stats.io/PenguinStats/api/v2/report"
     post_data = {
         "drops": drops,
@@ -58,11 +58,11 @@ def report(stage_id: str, drops: list[dict[str:str or int]], source: str = 'CLIE
 
 
 def login(user_id: int) -> None:
-    '''Login to the Penguin Statistics
+    """Login to the Penguin Statistics
 
     Args:
         `user_id`: The ID of the user.
-    '''
+    """
     url = "https://penguin-stats.io/PenguinStats/api/v2/users"
     with closing(requests.post(url, json=user_id)) as response:
         if response.status_code // 100 != 2:
